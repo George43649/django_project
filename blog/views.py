@@ -58,7 +58,7 @@ def post_share(request, post_id):
                       [cd['to']])
              sent = True
             
-         else:
+    else:
              form = EmailPostForm()
 
     return render(request,
