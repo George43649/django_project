@@ -19,7 +19,6 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
                             unique_for_date='publish')
-    body = models.TextField()
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='blog_posts')
@@ -30,6 +29,10 @@ class Post(models.Model):
     status = models.CharField(max_length=2,
                               choices=Status.choices,
                               default=Status.DRAFT)
+    objects = models.Manager()
+    published = PublishedManager()
+    tags = TaggableManager()
+
     class Meta:
         ordering = ['-publish']
         indexes = [
@@ -38,10 +41,6 @@ class Post(models.Model):
         
     def __str__(self):
         return self.title
-
-    objects = models.Manager()
-    published = PublishedManager()
-    tags = TaggableManager()
         
     def get_absolute_url(self):
         return reverse("blog:post_detail",
